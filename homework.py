@@ -6,7 +6,7 @@ import sys
 import telegram
 from dotenv import load_dotenv
 from http import HTTPStatus
-from exceptions import WrongStatusCodeException, Ambiguous_Exception
+from exceptions import WrongStatusCodeException, AmbiguousException
 load_dotenv()
 
 logging.basicConfig(
@@ -73,9 +73,9 @@ def get_api_answer(timestamp):
                                            f"REQUEST_PARAMS = {REQUEST_PARAMS}"
                                            )
     except requests.RequestException:
-        raise Ambiguous_Exception(f"При обработке запроса возникло"
-                                  f"неоднозначное исключение."
-                                  f"REQUEST_PARAMS = {REQUEST_PARAMS}")
+        raise AmbiguousException(f"При обработке запроса возникло"
+                                 f"неоднозначное исключение."
+                                 f"REQUEST_PARAMS = {REQUEST_PARAMS}")
     response = response.json()
     return response
 
@@ -122,8 +122,9 @@ def main():
         try:
             response = get_api_answer(timestamp)
             homework = check_response(response)
-            if homework != []:
-                message = parse_status(homework)
+            if homework == []:
+                raise IndexError('Списка с таким индексом не существует')
+            message = parse_status(homework)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logging.error(error)

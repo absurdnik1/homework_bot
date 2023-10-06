@@ -5,7 +5,7 @@ class WrongStatusCodeException(Exception):
 pass
 
 
-class Ambiguous_Exception(Exception):
+class AmbiguousException(Exception):
     """Exception class."""
 
 
