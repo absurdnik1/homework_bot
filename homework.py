@@ -89,7 +89,7 @@ def check_response(response):
         raise TypeError('Отсутсвуют ожидаемые ключи в ответе API')
     if not isinstance(response['homeworks'], list):
         raise TypeError('Тип данных "homeworks" не "list"')
-    return response['homeworks'][0]
+    return response['homeworks']
 
 
 def parse_status(homework):
@@ -122,9 +122,9 @@ def main():
         try:
             response = get_api_answer(timestamp)
             homework = check_response(response)
-            if homework == []:
+            if homework[0] == []:
                 raise IndexError('Списка с таким индексом не существует')
-            message = parse_status(homework)
+            message = parse_status(homework[0])
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logging.error(error)
