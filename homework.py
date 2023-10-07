@@ -122,9 +122,10 @@ def main():
         try:
             response = get_api_answer(timestamp)
             homework = check_response(response)
-            if homework[0] == []:
-                raise IndexError('Списка с таким индексом не существует')
-            message = parse_status(homework[0])
+            if homework == []:
+                message = 'Не найдено домашних работ'
+            else:
+                message = parse_status(homework[0])
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logging.error(error)
